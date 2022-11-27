@@ -9,6 +9,10 @@ const enum TargetType {
     COLLECTION = 2, // set map
 }
 
+export const ReactiveFlags = {
+    RAW: "__v_raw"
+}
+
 function targetTypeMap(type: string) {
     switch (type) {
         case 'Object':
@@ -50,12 +54,13 @@ const collectionHandlers = {
     get(target, key) {
         console.log('进这里了', target, key);
         // 获取原始值
-        if(key === '__reactive_raw') return target
+        if(key === ReactiveFlags.RAW) return target
 
         if(key === 'size') {
             track(target, 'collection-size', COL_KEY)
             return Reflect.get(target, key)
         }
+
 
         return collectionActions[key]
     }
@@ -63,15 +68,21 @@ const collectionHandlers = {
 
 const collectionActions = {
     add(val) {
-        const target = this['__reactive_raw']
+        const target = this[ReactiveFlags.RAW]
         const res = target.add(val)
         trigget(target, 'collection-add', COL_KEY)
         return res
     },
     delete(val) {
-        const target = this['__reactive_raw']
+        const target = this[ReactiveFlags.RAW]
         const res = target.delete(val)
         trigget(target, 'collection-delete', COL_KEY)
+        return res
+    },
+    has(val) {
+        const target = this[ReactiveFlags.RAW]
+        const res = target.has(val)
+        trigget(target, 'collection-has', COL_KEY)
         return res
     }
 }

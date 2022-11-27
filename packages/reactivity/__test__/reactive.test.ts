@@ -60,4 +60,11 @@ describe('支持Set/Map', () => {
         set.delete(2)
         expect(val).toBe(2)
     })
+
+    it('Set的has', () => {
+        let set = reactive(new Set([1, 2, 3]))
+        expect(set.has(1)).toBe(true)
+        set.delete(1)
+        expect(set.has(1)).toBe(false)
+    })
 })
