@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { effect, reactive, shadowReactive } from '../src/index'
+import { effect, reactive, shadowReactive, ref, isRef, isReactive } from '../src/index'
 
 
 describe('响应式', () => {
@@ -35,6 +35,15 @@ describe('响应式', () => {
         expect(val).toBe('lk')
         delete obj.name
         expect(val).toBeUndefined()
+    })
+
+    it('工具函数', () => {
+        let val1 = ref(1)
+        let val2 = reactive({age: 1})
+        let val3 = shadowReactive({age: 1})
+        expect(isRef(val1)).toBe(true)
+        expect(isReactive(val2)).toBe(true)
+        expect(isReactive(val3)).toBe(true)
     })
 })
 

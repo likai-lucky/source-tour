@@ -18,7 +18,6 @@ describe('effect', () => {
         effect(() => {
             fn1()
             effect(() => {
-                console.log('执行我了');
                 fn2()
                 temp2 = obj.bar
             })

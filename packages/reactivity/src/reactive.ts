@@ -3,6 +3,10 @@ import { track, trigget } from './index'
 import { baseHandlers, shadowHandlers } from './baseHandlers'
 import { collectionHandlers } from './collectionHandlers'
 
+export function isReactive(val: any) {
+    return val[ReactiveFlags.IS_REACTIVE]
+}
+
 export const COL_KEY = Symbol('collection')
 
 const enum TargetType {
@@ -12,7 +16,8 @@ const enum TargetType {
 }
 
 export const ReactiveFlags = {
-    RAW: "__v_raw"
+    RAW: "__v_raw",
+    IS_REACTIVE: "__is_reactive"
 }
 
 function targetTypeMap(type: string) {

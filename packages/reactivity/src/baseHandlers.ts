@@ -1,9 +1,12 @@
 import { isObject, toRawType } from "@likai/utils";
 import { track, trigget } from './index'
-import { reactive } from './reactive'
+import { reactive, ReactiveFlags } from './reactive'
 
 function createGetter(isShadow: Boolean) {
     return function get(target, key) {
+        if(key === ReactiveFlags.IS_REACTIVE) {            
+            return true
+        }
         const val = Reflect.get(target, key)
         track(target, 'get', key)
         if(isObject(val)) {

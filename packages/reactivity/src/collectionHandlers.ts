@@ -4,7 +4,6 @@ import { ReactiveFlags, COL_KEY } from './reactive'
 
 export const collectionHandlers = {
     get(target, key) {
-        console.log('进这里了', target, key);
         // 获取原始值
         if (key === ReactiveFlags.RAW) return target
 

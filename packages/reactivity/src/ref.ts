@@ -1,12 +1,18 @@
 import { isObject } from "@likai/utils";
 import { track, trigget } from './effect'
-import { reactive } from './reactive'
+import { reactive, ReactiveFlags } from './reactive'
+
+export function isRef(val: any) {
+    return val.isRef
+}
 
 export function ref(val) {
     return new RefImpl(val)
 }
 
 class RefImpl {
+    isRef: boolean
+    _val: any
     constructor(val) {
         this.isRef = true
         this._val = convert(val)
