@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 
 import { effect, reactive, shadowReactive, ref, isRef, isReactive } from '../src/index'
 
@@ -35,6 +35,33 @@ describe('响应式', () => {
         expect(val).toBe('lk')
         delete obj.name
         expect(val).toBeUndefined()
+    })
+
+    it('响应式的清理', () => {
+        let obj = reactive({
+            ok: true,
+            name: 'likai'
+        })
+        let val
+        let fn = vi.fn(() => {
+            val = obj.ok ? obj.name : 'James-Harden'
+        })
+        effect(fn)
+
+        expect(val).toBe('likai')
+        expect(fn).toBeCalledTimes(1)
+
+        obj.ok = false
+        expect(val).toBe('James-Harden')
+        expect(fn).toBeCalledTimes(2)
+
+        obj.name = 'xiaokai'
+        expect(val).toBe('James-Harden')
+        expect(fn).toBeCalledTimes(2)
+
+        obj.ok = true
+        expect(val).toBe('xiaokai')
+        expect(fn).toBeCalledTimes(3)
     })
 
     it('工具函数', () => {
